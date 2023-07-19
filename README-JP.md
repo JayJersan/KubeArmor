@@ -12,10 +12,10 @@ KubeArmor は、 [AppArmor](https://en.wikipedia.org/wiki/AppArmor), [SELinux](h
 
 |  |   |
 |:---|:---|
-| :muscle: **[インフラの強化](getting-started/hardening_guide.md)** <hr>:chains: 証明書バンドルなどのクリティカルパスを保護 <br>:clamp: MITRE、STIG、CIS ベースのルール <br>:left_luggage: Restrict access to raw DB table | :ring: **[Least Permissive Access](getting-started/least_permissive_access.md)** <hr>:traffic_light: Process Whitelisting <br>:traffic_light: Network Whitelisting <br>:control_knobs: Control access to sensitive assets |
-| :telescope: **[Application Behavior](getting-started/workload_visibility.md)** <hr>:dna: Process execs, File System accesses <br>:compass: Service binds, Ingress, Egress connections <br>:microscope: Sensitive system call profiling | :snowflake: **[Deployment Models](getting-started/deployment_models.md)** <hr>:wheel_of_dharma: Kubernetes Deployment<br>:whale2: Containerized Deployment<br>:desktop_computer: VM/Bare-Metal Deployment |
+| :muscle: **[インフラの強化](getting-started/hardening_guide.md)** <hr>:chains: 証明書バンドルなどのクリティカルパスを保護 <br>:clamp: MITRE、STIG、CIS ベースのルール <br>:left_luggage: 生の DB テーブルへのアクセスを制限 | :ring: **[最も許容度の低いアクセス](getting-started/least_permissive_access.md)** <hr>:traffic_light: プロセスのホワイトリスト <br>:traffic_light: ネットワークのホワイトリスト <br>:control_knobs: 機密アセットへのアクセスを制御 |
+| :telescope: **[アプリケーションの動作](getting-started/workload_visibility.md)** <hr>:dna: プロセス実行、ファイル システム アクセス <br>:compass: サービスバインド、イングレス接続、エグレス接続 <br>:microscope: 機密性の高いシステムコール | :snowflake: **[デプロイメント モデル](getting-started/deployment_models.md)** <hr>:wheel_of_dharma: Kubernetesのデプロイメント<br>:whale2: コンテナ化されたデプロイメント<br>:desktop_computer: VM/ベアメタルのデプロイメント |
 
-## Architecture Overview
+## アーキテクチャの概要
 
 ![KubeArmor High Level Design](.gitbook/assets/kubearmor_overview.png)
 
