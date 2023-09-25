@@ -44,6 +44,11 @@ type ConfigMapData struct {
 	DefaultNetworkPosture      string
 }
 
+// GetK8sClient function return instance of k8s client
+func GetK8sClient() *kcli.Client {
+	return k8sClient
+}
+
 func connectKcClient() error {
 	var kubeconfig string
 	var contextName string
@@ -105,7 +110,7 @@ func (data *ConfigMapData) CreateKAConfigMap() error {
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "kubearmor-config",
-			Namespace: "kube-system",
+			Namespace: "kubearmor",
 			Labels: map[string]string{
 				"kubearmor-app": "kubearmor-configmap",
 			},
@@ -120,12 +125,12 @@ func (data *ConfigMapData) CreateKAConfigMap() error {
 		},
 	}
 
-	_, err := k8sClient.K8sClientset.CoreV1().ConfigMaps("kube-system").Create(context.Background(), cm, metav1.CreateOptions{})
+	_, err := k8sClient.K8sClientset.CoreV1().ConfigMaps("kubearmor").Create(context.Background(), cm, metav1.CreateOptions{})
 	if err != nil {
 		if !strings.Contains(err.Error(), "already exists") {
 			return err
 		}
-		_, err := k8sClient.K8sClientset.CoreV1().ConfigMaps("kube-system").Update(context.Background(), cm, metav1.UpdateOptions{})
+		_, err := k8sClient.K8sClientset.CoreV1().ConfigMaps("kubearmor").Update(context.Background(), cm, metav1.UpdateOptions{})
 		if err != nil {
 			return err
 		}
@@ -135,7 +140,7 @@ func (data *ConfigMapData) CreateKAConfigMap() error {
 
 // DeleteKAConfigMap function
 func DeleteKAConfigMap() error {
-	err := k8sClient.K8sClientset.CoreV1().ConfigMaps("kube-system").Delete(context.Background(), "kubearmor-config", metav1.DeleteOptions{})
+	err := k8sClient.K8sClientset.CoreV1().ConfigMaps("kubearmor").Delete(context.Background(), "kubearmor-config", metav1.DeleteOptions{})
 	return err
 }
 
@@ -208,7 +213,7 @@ func K8sDeploymentCheck(depname string, ns string, timeout time.Duration) error 
 	return waitForCondition(timeout, isDeploymentReady(depname, ns))
 }
 
-func annotationsMatch(pod corev1.Pod, ants []string) bool {
+func AnnotationsMatch(pod corev1.Pod, ants []string) bool {
 	if ants == nil || len(ants) <= 0 {
 		return true
 	}
@@ -259,7 +264,7 @@ func K8sGetPods(podstr string, ns string, ants []string, timeout int) ([]string,
 			if p.Status.Reason != "" {
 				continue
 			}
-			if !annotationsMatch(p, ants) {
+			if !AnnotationsMatch(p, ants) {
 				continue
 			}
 			if strings.HasPrefix(p.ObjectMeta.Name, podstr) {
@@ -581,4 +586,15 @@ func K8sCRIRuntime() string {
 
 	containerRuntime := nodes.Items[0].Status.NodeInfo.ContainerRuntimeVersion
 	return containerRuntime
+}
+
+// K8sRuntimeEnforcer extracts Runtime Enforcer from the Node Labels
+func K8sRuntimeEnforcer() string {
+	nodes, _ := k8sClient.K8sClientset.CoreV1().Nodes().List(context.Background(), metav1.ListOptions{})
+	if len(nodes.Items) <= 0 {
+		return ""
+	}
+
+	runtimeEnforcer := nodes.Items[0].Labels["kubearmor.io/enforcer"]
+	return runtimeEnforcer
 }

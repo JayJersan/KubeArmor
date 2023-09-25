@@ -48,13 +48,8 @@ func GetClusterRole() *rbacv1.ClusterRole {
 			},
 			{
 				APIGroups: []string{"apps"},
-				Resources: []string{"deployments"},
+				Resources: []string{"deployments", "replicasets", "daemonsets", "statefulsets"},
 				Verbs:     []string{"get", "patch", "list", "watch", "update"},
-			},
-			{
-				APIGroups: []string{"apps"},
-				Resources: []string{"replicasets", "daemonsets", "statefulsets"},
-				Verbs:     []string{"get", "list", "watch"},
 			},
 			{
 				APIGroups: []string{"security.kubearmor.com"},
@@ -570,13 +565,9 @@ func GetKubeArmorControllerDeployment(namespace string) *appsv1.Deployment {
 								PeriodSeconds:       int32(10),
 							},
 							Resources: corev1.ResourceRequirements{
-								Limits: corev1.ResourceList{
-									corev1.ResourceCPU:    resource.MustParse("100m"),
-									corev1.ResourceMemory: resource.MustParse("30Mi"),
-								},
 								Requests: corev1.ResourceList{
-									corev1.ResourceCPU:    resource.MustParse("100m"),
-									corev1.ResourceMemory: resource.MustParse("20Mi"),
+									corev1.ResourceCPU:    resource.MustParse("10m"),
+									corev1.ResourceMemory: resource.MustParse("64Mi"),
 								},
 							},
 						},

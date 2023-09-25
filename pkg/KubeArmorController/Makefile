@@ -9,6 +9,8 @@ IMG ?= kubearmor/kubearmor-controller
 TAG ?= v0.1
 # Produce CRDs that work back to Kubernetes 1.11 (no version conversion)
 CRD_OPTIONS ?= "crd:trivialVersions=true,preserveUnknownFields=false"
+# Target platforms for build
+PLATFORM ?= "linux/amd64,linux/arm64/v8"
 
 # Get the currently used golang install path (in GOPATH/bin, unless GOBIN is set)
 ifeq (,$(shell go env GOBIN))
@@ -84,10 +86,10 @@ run: manifests generate fmt vet ## Run a controller from your host.
 
 .PHONY: docker-build
 docker-build: build ## Build docker image with the manager.
-	docker build -t ${IMG}:${TAG} -t ${IMG}:latest .
+	docker build -t ${IMG}:${TAG} -t ${IMG}:latest --build-arg VERSION=${TAG} .
 
 docker-buildx: build ## Build docker image with the manager multiple archs.
-	docker buildx build --platform ${PLATFORM} --push -t ${IMG}:${TAG} -t ${IMG}:latest .
+	docker buildx build --platform ${PLATFORM} --build-arg VERSION=${TAG} --push -t ${IMG}:${TAG} .
 
 .PHONY: docker-push
 docker-push: ## Push docker image with the manager.
