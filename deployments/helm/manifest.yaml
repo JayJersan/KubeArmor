@@ -1,0 +1,11 @@
+applicationName: com.accuknox.kubearmor
+publisher: "AccuKnox"
+description: "Cloud-native Runtime Security Enforcement System. [CNCF Sandbox Project]"
+version: 1.0.0 #Must be semver
+helmChart: "./KubeArmorOperator"
+clusterArmTemplate: "./clusterDeployment.json"
+uiDefinition: "./uiDefinition.json"
+registryServer: "<<youracr>>.azurecr.io"
+extensionRegistrationParameters:
+  defaultScope: "cluster" #Can be cluster or namespace
+  namespace: "kube-system" #Enter namespace, required if selected cluster as scope
