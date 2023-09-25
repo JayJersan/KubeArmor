@@ -211,7 +211,7 @@
 						"name": "extensionResourceName",
 						"type": "Microsoft.Common.TextBox",
 						"label": "Cluster extension resource name",
-						"defaultValue": "",
+						"defaultValue": "kubearmor",
 						"toolTip": "Only lowercase alphanumeric characters are allowed, and the value must be 6-30 characters long.",
 						"constraints": {
 							"required": true,
