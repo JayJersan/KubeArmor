@@ -1,9 +1,10 @@
-name: kubearmor-operator
-global:
-  azure:
-    images:
-      kubearmorOperator: #Need to change the below values
-        registry: azurek8ssamples.azurecr.io/marketplaceimages
-        digest: latest
-        image: kubearmor/kubearmor-operator
-imagePullPolicy: IfNotPresent
+kubearmorOperator:
+  name: kubearmor-operator
+  global:
+    azure:
+      images:
+        kubearmorOperator: #Need to change the below values
+          registry: azurek8ssamples.azurecr.io/marketplaceimages
+          digest: latest
+          image: kubearmor/kubearmor-operator
+  imagePullPolicy: IfNotPresent
